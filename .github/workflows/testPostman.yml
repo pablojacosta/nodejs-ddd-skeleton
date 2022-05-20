@@ -1,0 +1,53 @@
+name: Reusable Workflow Postman Suite Case
+
+on:
+    workflow_call:
+
+jobs:
+    test-api-postman:
+        name: "[Postman Tests]"
+        runs-on: ubuntu-latest
+        if: contains('refs/heads/main', github.ref)
+        steps:
+            - uses: actions/checkout@v2
+
+            - name: "[Check if exist Postman Collections]"
+              id: check_files
+              uses: andstor/file-existence-action@v1
+              with:
+                  files: "./postman/collections/postman_collection.json, ./postman/collections/postman_environment.json"
+
+            - name: "[Restore node modules]"
+              if: steps.check_files.outputs.files_exists == 'true'
+              id: cache-node-modules
+              uses: actions/cache@v2
+              with:
+                  path: node_modules
+                  key: ${{ runner.os }}-nodemodules-${{ hashFiles('**/yarn.lock') }}
+                  restore-keys: |
+                      ${{ runner.os }}-nodemodules-
+            - name: "[Install Newman]"
+              if: steps.check_files.outputs.files_exists == 'true'
+              run: |
+                  npm install -g newman
+                  npm install -g newman-reporter-htmlextra
+            - name: "[Start Docker Containers]"
+              id: docker-start
+              if: steps.check_files.outputs.files_exists == 'true'
+              run: docker-compose -f "docker-compose.yml" -f "docker-compose.github.yml" up -d
+
+            - name: "[Run POSTMAN collection]"
+              id: postman-run
+              if: steps.check_files.outputs.files_exists == 'true'
+              run: sleep 5; newman run ./postman/collections/postman_collection.json -e ./postman/collections/postman_environment.json -r htmlextra --reporter-htmlextra-export ./postman/results/reportTests.html
+
+            - name: "[Output the run Details]"
+              if: steps.postman-run.outcome != 'skipped'
+              uses: actions/upload-artifact@v2
+              with:
+                  name: ReportTests
+                  path: ./postman/results
+
+            - name: "[Stop Docker the run Details]"
+              if: steps.docker-start.outcome == 'success'
+              run: docker-compose -f "docker-compose.yml" down

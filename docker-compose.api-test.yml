@@ -1,0 +1,11 @@
+version: "3"
+
+services:
+    app:
+        environment:
+            NODE_ENV: test
+            HTTP_PORT: 3000
+            CORS_ALLOWED_ORIGIN: "*"
+            MONGODB_URL: mongodb://database:27017
+            MONGODB_DATABASE: dbname_test
+        command: bash -c "NODE_ENV=test yarn install && yarn run test"

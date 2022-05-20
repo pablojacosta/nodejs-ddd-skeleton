@@ -1,0 +1,23 @@
+version: "3"
+
+services:
+    app:
+        container_name: App_Skeleton
+        build: ./
+        ports:
+            - "3000:3000"
+        links:
+            - database
+        volumes:
+            - .:/application
+            - /application/node_modules
+        depends_on:
+            - database
+        command: bash -c "yarn run dev"
+    database:
+        container_name: Bdd_Skeleton
+        image: mongo
+        ports:
+            - 27018:27017
+        volumes:
+            - .:/application
