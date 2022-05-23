@@ -17,15 +17,9 @@ export class PublishReportsCommand implements ICommand {
     public async execute(): Promise<void> {
         const reports: Report[] = await this.reportRepository.findAllReports();
 
-        reports.forEach((report) => this.publishReportsService.publishReport(report));
-
-        // Estas dos líneas de código que siguen las usé de control, para ver que funcionara
-        // pero si las saco no se updatea la db. Si las dejo, funciona perfecto.
-        // Entiendo que es el await al repository lo q lo hace funcionar, pero no entiendo
-        // por qué es necesario.
-
-        const reportsAfter: Report[] = await this.reportRepository.findAllReports();
-        console.log(reportsAfter);
+        for (const report of reports) {
+            this.publishReportsService.publishReport(report);
+        }
 
         writeSuccess("Reports Published");
     }
