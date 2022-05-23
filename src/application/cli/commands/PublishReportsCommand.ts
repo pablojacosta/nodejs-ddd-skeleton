@@ -21,6 +21,9 @@ export class PublishReportsCommand implements ICommand {
             this.publishReportsService.publishReport(report);
         }
 
+        const reportsPublished: Report[] = await this.reportRepository.findAllReports();
+        console.log(reportsPublished);
+
         writeSuccess("Reports Published");
     }
 }
