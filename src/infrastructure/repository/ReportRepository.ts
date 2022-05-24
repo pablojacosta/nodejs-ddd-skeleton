@@ -1,5 +1,5 @@
 import { TYPES } from "application/config/ioc/types";
-import { Report } from "domain/entity/Report";
+import { Report, ReportStatus } from "domain/entity/Report";
 import { IReportRepository } from "domain/repository/ReportRepository";
 import { provideSingleton } from "infrastructure/inversify/CustomProviders";
 import { IConnectionManager } from "infrastructure/mongodb/ConnectionManager";
@@ -42,7 +42,11 @@ export class ReportRepository extends MongoRepository implements IReportReposito
         return await this.findOneBy({ id });
     }
 
-    public async findAllReports(): Promise<Report[]> {
-        return await this.findAll();
+    public async findPendingToPublish(): Promise<Report[]> {
+        const filter: { [key: string]: unknown } = {};
+        filter.status = ReportStatus.Draft;
+        filter.publishAt = { $lte: (Date.now() / 1000) | 0 };
+
+        return await this.findBy(filter);
     }
 }

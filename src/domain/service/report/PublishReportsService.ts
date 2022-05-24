@@ -5,7 +5,7 @@ import { TYPES } from "application/config/ioc/types";
 import { IReportRepository } from "domain/repository/ReportRepository";
 
 export interface IPublishReportsService {
-    publishReport(report: Report): Promise<Report>;
+    publishReports(): Promise<Report[]>;
 }
 
 @provideSingleton(TYPES.PublishReportsService)
@@ -16,16 +16,16 @@ export class PublishReportsService implements IPublishReportsService {
         this.reportRepository = reportRepository;
     }
 
-    public async publishReport(report: Report): Promise<Report> {
-        if (report.publishAt <= ((Date.now() / 1000) | 0)) {
+    public async publishReports(): Promise<Report[]> {
+        const reports: Report[] = await this.reportRepository.findPendingToPublish();
+
+        for (const report of reports) {
             report.status = ReportStatus.Published;
             report.updatedAt = (Date.now() / 1000) | 0;
 
             await this.reportRepository.persist(report);
-
-            return report;
         }
 
-        return report;
+        return reports;
     }
 }

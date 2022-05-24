@@ -1,4 +1,4 @@
-import { Report } from "../entity/Report";
+import { Report, ReportStatus } from "../entity/Report";
 
 export interface IReportRepository {
     persist(report: Report): Promise<void>;
@@ -10,6 +10,6 @@ export interface IReportRepository {
         dateTo?: number
     ): Promise<Report[]>;
     findOneById(id: string): Promise<Report | null>;
-    findAllReports(): Promise<Report[]>;
+    findPendingToPublish(): Promise<Report[]>;
     remove(report: Report): Promise<void>;
 }
