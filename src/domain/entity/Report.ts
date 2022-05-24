@@ -58,5 +58,5 @@ export interface Report {
 
 export enum ReportStatus {
     Draft = "draft",
-    Published = "published"
+    Published = "published",
 }
