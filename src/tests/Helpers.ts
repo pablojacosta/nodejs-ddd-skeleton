@@ -156,7 +156,7 @@ export const reportForPutPublished = {
     publishAt: 1653320050,
 };
 
-export const reportForCreateService = {
+export const reportForCreateServicePublished = {
     userId: "969f4040-a622-4ac6-bb38-4dea10747b87",
     title: "Published Test",
     content: "Published Test",
@@ -164,10 +164,26 @@ export const reportForCreateService = {
     status: ReportStatus.Published,
 };
 
-export const reportForUpdateService = {
+export const reportForCreateServiceDraft = {
+    userId: "969f4040-a622-4ac6-bb38-4dea10747b87",
+    title: "Published Test",
+    content: "Published Test",
+    publishAt: 1653320050,
+    status: ReportStatus.Draft,
+};
+
+export const reportForUpdateServicePublished = {
     userId: "25c7e026-00f4-4127-a1a6-2365318ec253",
     title: "Published Test",
     content: "Published Test",
     publishAt: 1653320050,
     status: ReportStatus.Published,
+};
+
+export const reportForUpdateServiceDraft = {
+    userId: "25c7e026-00f4-4127-a1a6-2365318ec253",
+    title: "Published Test",
+    content: "Published Test",
+    publishAt: 1653320050,
+    status: ReportStatus.Draft,
 };
