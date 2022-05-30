@@ -6,7 +6,7 @@ import { provideSingleton } from "infrastructure/inversify/CustomProviders";
 import { IUserRepository } from "domain/repository/UserRepository";
 import { User } from "domain/entity/User";
 
-const collectionName: string = "user";
+export const collectionName: string = "user";
 
 @provideSingleton(TYPES.UserRepository)
 export class UserRepository extends MongoRepository implements IUserRepository {

@@ -56,14 +56,11 @@ export interface ICreateReportService {
 
 @provideSingleton(TYPES.CreateReportService)
 export class CreateReportService implements ICreateReportService {
-    @inject(TYPES.UserRepository) private readonly userRepository: IUserRepository;
-    private readonly reportRepository: IReportRepository;
-
-    @inject(TYPES.IdGenerator) private readonly idGenerator: IIdGeneratorService;
-
-    constructor(@inject(TYPES.ReportRepository) reportRepository: IReportRepository) {
-        this.reportRepository = reportRepository;
-    }
+    constructor(
+        @inject(TYPES.ReportRepository) private readonly reportRepository: IReportRepository,
+        @inject(TYPES.IdGenerator) private readonly idGenerator: IIdGeneratorService,
+        @inject(TYPES.UserRepository) private readonly userRepository: IUserRepository
+    ) {}
 
     public async create({ userId, title, content, publishAt }: ICreateReportDto): Promise<Report> {
         if (!(await this.userRepository.findOneById(userId))) {
