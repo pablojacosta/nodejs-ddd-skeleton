@@ -43,10 +43,6 @@ export class ReportRepository extends MongoRepository implements IReportReposito
     }
 
     public async findPendingToPublish(): Promise<Report[]> {
-        //const filter: { [key: string]: unknown } = {};
-        //filter.status = ReportStatus.Draft;
-        //filter.publishAt = { $lte: (Date.now() / 1000) | 0 };
-
         return await this.findBy({ status: ReportStatus.Draft, publishAt: { $lte: (Date.now() / 1000) | 0 } });
     }
 }
