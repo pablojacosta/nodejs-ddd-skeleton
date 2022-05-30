@@ -13,7 +13,7 @@ jest.mock("infrastructure/repository/UserRepository", () => ({
 
 jest.mock("infrastructure/repository/ReportRepository");
 
-describe("Create Report Service", () => {
+describe("Update Report Service", () => {
     const repository = new ReportRepository({} as IConnectionManager);
     const userRepository = new UserRepository({} as IConnectionManager);
     const service = new UpdateReportService(repository, userRepository);

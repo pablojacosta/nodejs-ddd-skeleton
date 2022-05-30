@@ -9,7 +9,7 @@ import { collectionName } from "infrastructure/repository/ReportRepository";
 import { nowTimeStamp, reportForPutDraft, reportForPutPublished, reports, users } from "tests/Helpers";
 import { ReportStatus } from "domain/entity/Report";
 
-describe("Put User", () => {
+describe("Put Report", () => {
     let app: e.Application, container: Container;
     let request: supertest.SuperTest<supertest.Test>;
     let server: Server;
