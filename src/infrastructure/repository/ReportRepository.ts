@@ -6,7 +6,7 @@ import { IConnectionManager } from "infrastructure/mongodb/ConnectionManager";
 import { MongoRepository } from "infrastructure/mongodb/MongoRepository";
 import { inject } from "inversify";
 
-const collectionName: string = "report";
+export const collectionName: string = "report";
 
 @provideSingleton(TYPES.ReportRepository)
 export class ReportRepository extends MongoRepository implements IReportRepository {
@@ -43,10 +43,10 @@ export class ReportRepository extends MongoRepository implements IReportReposito
     }
 
     public async findPendingToPublish(): Promise<Report[]> {
-        const filter: { [key: string]: unknown } = {};
-        filter.status = ReportStatus.Draft;
-        filter.publishAt = { $lte: (Date.now() / 1000) | 0 };
+        //const filter: { [key: string]: unknown } = {};
+        //filter.status = ReportStatus.Draft;
+        //filter.publishAt = { $lte: (Date.now() / 1000) | 0 };
 
-        return await this.findBy(filter);
+        return await this.findBy({ status: ReportStatus.Draft, publishAt: { $lte: (Date.now() / 1000) | 0 } });
     }
 }

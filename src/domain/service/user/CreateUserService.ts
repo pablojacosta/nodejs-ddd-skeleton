@@ -47,13 +47,10 @@ export interface ICreateUserService {
 
 @provideSingleton(TYPES.CreateUserService)
 export class CreateUserService implements ICreateUserService {
-    private readonly userRepository: IUserRepository;
-
-    @inject(TYPES.IdGenerator) private readonly idGenerator: IIdGeneratorService;
-
-    constructor(@inject(TYPES.UserRepository) userRepository: IUserRepository) {
-        this.userRepository = userRepository;
-    }
+    constructor(
+        @inject(TYPES.UserRepository) private readonly userRepository: IUserRepository,
+        @inject(TYPES.IdGenerator) private readonly idGenerator: IIdGeneratorService
+    ) {}
 
     public async create({ email, name, age, country }: ICreateUserDto): Promise<User> {
         const timestamp = (Date.now() / 1000) | 0;

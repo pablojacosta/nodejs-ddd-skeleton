@@ -55,13 +55,10 @@ export interface IUpdateReportService {
 
 @provideSingleton(TYPES.UpdateReportService)
 export class UpdateReportService implements IUpdateReportService {
-    @inject(TYPES.UserRepository) private readonly userRepository: IUserRepository;
-
-    private readonly reportRepository: IReportRepository;
-
-    constructor(@inject(TYPES.ReportRepository) reportRepository: IReportRepository) {
-        this.reportRepository = reportRepository;
-    }
+    constructor(
+        @inject(TYPES.ReportRepository) private readonly reportRepository: IReportRepository,
+        @inject(TYPES.UserRepository) private readonly userRepository: IUserRepository
+    ) {}
 
     public async update(report: Report, { userId, title, content, publishAt }: IUpdateReportDto): Promise<Report> {
         if (!(await this.userRepository.findOneById(userId))) {
